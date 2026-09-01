@@ -5,7 +5,7 @@ import Image from "next/image";
 export default function Home() {
   return (
     <FrontendLayout>
-      {/* navbar */}
+      {/* navbar (<Navbar variant="solid" />) */}
       <Navbar />
       <section
         className="relative flex min-h-screen items-center overflow-hidden 

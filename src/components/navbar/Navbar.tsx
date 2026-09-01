@@ -1,11 +1,13 @@
 import Link from "next/link";
+import Button from "../ui/Button";
+import { FaHome } from "react-icons/fa";
 
 interface NavbarProps {
   // Define any props you want to pass to the Navbar component here
   variant?: "transparent" | "solid";
 }
 
-const navLinks = ["HOme", "Properties", "MarketPlace"];
+const navLinks = ["Home", "Properties", "MarketPlace"];
 
 export default function Navbar({ variant = "transparent" }: NavbarProps) {
   const isTransparent = variant === "transparent";
@@ -27,6 +29,27 @@ export default function Navbar({ variant = "transparent" }: NavbarProps) {
               Estate
             </span>
           </Link>
+
+          {/* desktop or Navigation Links */}
+          <div className="hidden items-center gap-8 lg:flex">
+            {navLinks.map((item) => (
+              <Link
+                key={item}
+                href={item === "Home" ? "/" : `${item.toLowerCase()}`}
+                className={`text-sm font-medium transition hover:text-primary ${isTransparent ? "text-white/80" : "text-text/70"} `}
+              >
+                {item}
+              </Link>
+            ))}
+          </div>
+
+          {/* desktop or Navigation Links (iconPosition="right" icon = {<FaHome/>}) */}
+          <div className="hidden lg:flex items-center gap-4">
+            <Button variant="outline">Login</Button>
+            <Button  variant="outline">
+              Add Property
+            </Button>
+          </div>
         </nav>
       </div>
     </section>
