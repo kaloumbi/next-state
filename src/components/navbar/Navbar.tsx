@@ -1,6 +1,11 @@
+"use client";
+
 import Link from "next/link";
 import Button from "../ui/Button";
 import { FaHome } from "react-icons/fa";
+import { useState } from "react";
+import { IoClose } from "react-icons/io5";
+import { HiOutlineMenuAlt3 } from "react-icons/hi";
 
 interface NavbarProps {
   // Define any props you want to pass to the Navbar component here
@@ -11,6 +16,8 @@ const navLinks = ["Home", "Properties", "MarketPlace"];
 
 export default function Navbar({ variant = "transparent" }: NavbarProps) {
   const isTransparent = variant === "transparent";
+
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <section
@@ -46,11 +53,45 @@ export default function Navbar({ variant = "transparent" }: NavbarProps) {
           {/* desktop or Navigation Links (iconPosition="right" icon = {<FaHome/>}) */}
           <div className="hidden lg:flex items-center gap-4">
             <Button variant="outline">Login</Button>
-            <Button  variant="outline">
-              Add Property
-            </Button>
+            <Button variant="outline">Add Property</Button>
           </div>
+          {/* mobile menu button*/}
+          <button
+            className={`
+              flex h-11 items-center justify-center
+              rounded-2xl transition lg:hidden
+              ${isTransparent ? "border border-white/10 bg-white/5 text-white" : "border border-black/10 bg-background text-text"}
+              `}
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            {isOpen ? <IoClose size={24} /> : <HiOutlineMenuAlt3 size={24} />}
+          </button>
         </nav>
+        {/* mobile menu */}
+        {isOpen && (
+          <div
+            className={`mt-4 rounded-3xl p-6 backdrop-blur-2xl
+            lg:hidden
+            ${isTransparent ? "border border-white/10 bg-secondary/95" : "border border-black/5 bg-white"}
+            `}
+          >
+            <div className="flex flex-col gap-5">
+              {navLinks.map((item) => (
+                <Link
+                  key={item}
+                  href={item === "Home" ? "/" : `${item.toLowerCase()}`}
+                  className={`transition hover:text-primary ${isTransparent ? "text-white/80" : "text-text/70"} `}
+                >
+                  {item}
+                </Link>
+              ))}
+              <div className="flex flex-col gap-3 mt-4">
+                <Button variant="outline">Login</Button>
+                <Button variant="outline">Add Property</Button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
