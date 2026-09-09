@@ -7,6 +7,7 @@ import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { useAuthModal } from "@/app/store/useAuthModalStore";
+import { useCreatePropertyModalStore } from "@/app/store/useCreatePropertyModalStore";
 
 interface NavbarProps {
   // Define any props you want to pass to the Navbar component here
@@ -19,6 +20,8 @@ export default function Navbar({ variant = "transparent" }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const { openLogin } = useAuthModal();
+
+  const { open: openCreateModal } = useCreatePropertyModalStore();
 
   const isTransparent = variant === "transparent";
 
@@ -58,7 +61,9 @@ export default function Navbar({ variant = "transparent" }: NavbarProps) {
             <Button variant="outline" onClick={openLogin}>
               Login
             </Button>
-            <Button variant="outline">Add Property</Button>
+            <Button variant="outline" onClick={openCreateModal}>
+              Add Property
+            </Button>
           </div>
           {/* mobile menu button*/}
           <button
@@ -94,7 +99,9 @@ export default function Navbar({ variant = "transparent" }: NavbarProps) {
                 <Button variant="outline" onClick={openLogin}>
                   Login
                 </Button>
-                <Button variant="outline">Add Property</Button>
+                <Button variant="outline" onClick={openCreateModal}>
+                  Add Property
+                </Button>
               </div>
             </div>
           </div>
