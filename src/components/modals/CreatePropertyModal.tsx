@@ -22,7 +22,7 @@ const STEPS = {
 export default function CreatePropertyModal() {
   const { isOpen, close } = useCreatePropertyModalStore();
 
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(STEPS.TYPE);
 
   const [loading, setLoading] = useState(false);
 
