@@ -6,6 +6,10 @@ import { useState } from "react";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
 import { FcGoogle } from "react-icons/fc";
+import toast from "react-hot-toast";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
+import { signInWithGoogle } from "@/services/signInWithGoogle";
 
 interface RegisterValues {
   name: string;
@@ -16,6 +20,7 @@ interface RegisterValues {
 type RegisterErrors = Partial<Record<keyof RegisterValues, string>>;
 
 export default function RegisterModal() {
+  const router = useRouter();
   const { openLogin, isRegisterOpen, closeRegister } = useAuthModal();
 
   const [values, setValues] = useState<RegisterValues>({
@@ -70,6 +75,40 @@ export default function RegisterModal() {
     return Object.keys(newErrors).length === 0;
   };
 
+  const onSubmit = async (e: React.SubmitEvent) => {
+    e.preventDefault();
+
+    if (!validate()) return;
+
+    try {
+      setLoading(true);
+      const { error } = await authClient.signUp.email({
+        name: values.name,
+        email: values.email,
+        password: values.password,
+      });
+
+      if (error) {
+        toast.error(error.message as string);
+        return;
+      }
+
+      toast.success("Registration successful !");
+      router.refresh();
+
+      setValues({ name: "", email: "", password: "" });
+      closeRegister();
+    } catch (error) {
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong. Please try again.",
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Modal title="Register" onClose={closeRegister} isOpen={isRegisterOpen}>
       <div className="mb-6 space-y-1">
@@ -79,7 +118,9 @@ export default function RegisterModal() {
         <p className="text-sm text-gray-500">Create account</p>
       </div>
 
-      <form className="space-y-8">
+      {/* form */}
+
+      <form onSubmit={onSubmit} className="space-y-8">
         <Input
           id="login-name"
           name="name"
@@ -126,6 +167,7 @@ export default function RegisterModal() {
       </div>
 
       <Button
+        onClick={signInWithGoogle}
         variant="outline"
         fullWidth
         disabled={loading}
