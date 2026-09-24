@@ -10,6 +10,10 @@ import Input from "../ui/Input";
 import Counter from "../properties/Counter";
 import ImageUpload from "../properties/ImageUpload";
 
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+
 const STEPS = {
   TYPE: 0,
   LOCATION: 1,
@@ -20,6 +24,7 @@ const STEPS = {
 };
 
 export default function CreatePropertyModal() {
+  const router = useRouter();
   const { isOpen, close } = useCreatePropertyModalStore();
 
   const [step, setStep] = useState(STEPS.TYPE);
@@ -62,11 +67,65 @@ export default function CreatePropertyModal() {
     }
   };
 
-  const createListing = async () => {};
-
   const handleImageChange = (file: File) => {
     setImage(file);
     setPreview(URL.createObjectURL(file));
+  };
+
+  const createListing = async () => {
+    try {
+      setLoading(true);
+
+      const formData = new FormData();
+
+      formData.append("title", title);
+      formData.append("description", description);
+      formData.append("price", price);
+      formData.append("location", location);
+      formData.append("address", address);
+      formData.append("propertyType", propertyType);
+      formData.append("listingType", listingType);
+      formData.append("bedrooms", bedrooms.toString());
+      formData.append("bathrooms", bathrooms.toString());
+      formData.append("parkingSpaces", parkingSpaces.toString());
+      formData.append("price", price.toString());
+
+      if (image) {
+        formData.append("image", image);
+      }
+
+      await axios.post("/api/properties", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      toast.success("Property created successfully !");
+      router.replace("/properties");
+      handleClose();
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data.error || "Something went wrong !");
+        return;
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleClose = () => {
+    setPrice("");
+    setBedrooms(1);
+    setBathrooms(1);
+    setParkingSpaces(0);
+    setPropertyType("");
+    setLocation("");
+    setTitle("");
+    setDescription("");
+    setImage(null);
+    setStep(STEPS.TYPE);
+    setAddress("");
+    setArea("");
+    close();
   };
 
   return (
@@ -165,6 +224,7 @@ export default function CreatePropertyModal() {
             />
 
             <Input
+              as="textarea"
               name="description"
               label="Description"
               value={description}
