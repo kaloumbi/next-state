@@ -1,6 +1,7 @@
 import FrontendLayout from "@/components/layouts/FrontendLayout";
 import Navbar from "@/components/navbar/Navbar";
 import EmailForm from "@/components/properties/EmailForm";
+import PropertyPageSkeleton from "@/components/skeletons/PropertyPageSkeleton";
 import { getProperty } from "@/server-actions/getProperty";
 import Image from "next/image";
 import { Suspense } from "react";
@@ -26,7 +27,7 @@ export default async function ProperpyPage({
     <FrontendLayout>
       <Navbar variant="solid" />
 
-      <Suspense fallback={<p>Loading...</p>}>
+      <Suspense fallback={<PropertyPageSkeleton />}>
         <PropertyContent propertyId={propertyId} />
       </Suspense>
     </FrontendLayout>
