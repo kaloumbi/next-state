@@ -52,8 +52,9 @@ export default function EmptyState({
           <Button
             variant="outline"
             onClick={() => router.replace("/marketplace")}
-          ></Button>
-          Clear Filters
+          >
+            Clear Filters
+          </Button>
         </div>
       )}
     </div>

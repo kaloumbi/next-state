@@ -20,6 +20,7 @@ export async function getProperties(params?: GetPropertiesParams) {
           address: params?.address,
           minPrice: params?.minPrice,
           maxPrice: params?.maxPrice,
+          location: params?.location,
         },
       },
     );

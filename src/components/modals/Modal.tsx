@@ -1,4 +1,3 @@
-import { title } from "process";
 import { useEffect } from "react";
 import { LuX } from "react-icons/lu";
 
