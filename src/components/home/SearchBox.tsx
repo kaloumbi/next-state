@@ -1,6 +1,17 @@
+"use client";
+
+import { useState } from "react";
 import Button from "../ui/Button";
+import { useRouter } from "next/navigation";
 
 export default function SearchBox() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter();
+
+  const handleSearch = () => {
+    if (!searchQuery.trim()) return;
+    router.replace(`/marketplace?search=${searchQuery}`);
+  };
   return (
     <div
       className="mt-10 rounded-[30px]
@@ -10,6 +21,8 @@ export default function SearchBox() {
     >
       <div className="flex flex-col gap-4 lg:flex-row items-center">
         <input
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
           type="text"
           placeholder="Search by city, neighborhood,
         or address"
@@ -23,7 +36,7 @@ export default function SearchBox() {
         outline-none transition
         focus:border-primary/40"
         />
-        <Button>Search Properties</Button>
+        <Button onClick={handleSearch}>Search Properties</Button>
       </div>
     </div>
   );
