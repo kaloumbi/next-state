@@ -7,6 +7,7 @@ import Button from "../ui/Button";
 import { LuSend } from "react-icons/lu";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { formatPrice } from "@/app/property/[propertyId]/page";
 
 interface InputValues {
   email: string;
@@ -70,6 +71,7 @@ export default function EmailForm({
       });
 
       toast.success("Message sent successfully !");
+      setValues({ message: "", email: "", name: "", phone: "" });
     } catch (error) {
       console.log(error);
 
@@ -99,7 +101,7 @@ export default function EmailForm({
           />
           <div>
             <h3 className="text-xl font-bold text-text">{name}</h3>
-            <p className="text-text/60">Property Agent</p>
+            <p className="text-text/60">{propertyPrice} </p>
           </div>
         </div>
 

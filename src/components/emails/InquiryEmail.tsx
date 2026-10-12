@@ -8,9 +8,11 @@ import {
   Html,
   Preview,
   Section,
+  Tailwind,
   Text,
 } from "react-email";
-import { TbBrandTailwind } from "react-icons/tb";
+
+//import { TbBrandTailwind } from "react-icons/tb";
 
 interface InquiryEmailProps {
   senderEmail: string;
@@ -33,7 +35,7 @@ export default function RealEstateInquiryEmail({
 }: InquiryEmailProps) {
   return (
     <Html lang="en" dir="ltr">
-      <TbBrandTailwind>
+      <Tailwind>
         <Head />
         <Preview>
           New property inquiry from {senderEmail} - {propertyTitle}
@@ -97,7 +99,7 @@ export default function RealEstateInquiryEmail({
             </Text>
           </Container>
         </Body>
-      </TbBrandTailwind>
+      </Tailwind>
     </Html>
   );
 }
